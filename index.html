@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chores Tracker</title>
+<style>
+    select {
+        appearance: none;
+        background-color: #f7f7f7;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 8px;
+        width: 100%;
+        font-size: 16px;
+        color: #555;
+        cursor: pointer;
+    }
+
+    /* Style the selected option */
+    select option:checked {
+    background-color: #007bff;
+    color: white;
+    }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 80%;
+    max-width: 400px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button.delete {
+    background-color: #dc3545;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Chores Tracker</h1>
+  <form id="choresForm">
+    <label for="person">Select a person:</label>
+    <select id="person" name="person">
+      <option value="Ray">Ray</option>
+      <option value="Max">Max</option>
+      <option value="Ren">Ren</option>
+    </select>
+    <br>
+    <label for="chore">Select a chore:</label>
+    <select id="chore" name="chore">
+      <option value="Shower">Shower</option>
+      <option value="Bathroom">Bathroom</option>
+      <option value="Vacuuming">Vacuuming</option>
+      <option value="Toilet">Toilet</option>
+      <option value="Sweep">Sweep</option>
+      <option value="Sink">Sink</option>
+    </select>
+    <br>
+    <label for="amount">Amount of money:</label>
+    <input type="range" id="amount" name="amount" min="0" max="100" step="1" value="50">
+    <span id="amountDisplay">$50</span>
+    <br>
+    <button type="button" id="addButton">Add Chore</button>
+  </form>
+  <table id="choreTable">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Person</th>
+        <th>Chore</th>
+        <th>Amount</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+<script>
+  const addButton = document.getElementById("addButton");
+  const choreTable = document.getElementById("choreTable");
+  const personSelect = document.getElementById("person");
+  const choreSelect = document.getElementById("chore");
+  const amountRange = document.getElementById("amount");
+  const amountDisplay = document.getElementById("amountDisplay");
+  const form = document.getElementById("choresForm");
+  const tbody = choreTable.querySelector("tbody");
+
+  amountRange.addEventListener("input", function() {
+    amountDisplay.textContent = "$" + amountRange.value;
+  });
+
+  addButton.addEventListener("click", function() {
+    const date = new Date().toLocaleDateString();
+    const person = personSelect.value;
+    const chore = choreSelect.value;
+    const amount = "$" + amountRange.value;
+
+    const newRow = `
+      <tr>
+        <td>${date}</td>
+        <td>${person}</td>
+        <td>${chore}</td>
+        <td>${amount}</td>
+        <td><button class="delete">Delete</button></td>
+      </tr>
+    `;
+
+    tbody.innerHTML += newRow;
+    form.reset();
+  });
+
+  choreTable.addEventListener("click", function(event) {
+    if (event.target.classList.contains("delete")) {
+      event.target.closest("tr").remove();
+    }
+  });
+</script>
+</body>
+</html>
